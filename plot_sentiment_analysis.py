@@ -23,8 +23,11 @@ def plot_sentiment_analysis(book_file_name):
 	all_sentiment = []
 	for chap in lines:
 		all_sentiment.append(sentiment(chap))
-	print all_sentiment
-	plt.scatter(*zip(*all_sentiment))
+	all_sentiment = zip(*all_sentiment)
+	plt.plot((1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),all_sentiment[1],'-o')
+	plt.xlabel('Book Chapter #')
+	plt.ylabel('Positivity')
+	plt.title('Sentiment in each chapter of The Hound of the Baskervilles')
 	plt.show()
 
 def strip_gutenberg_header(input_book_lines):
