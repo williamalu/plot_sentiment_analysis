@@ -20,13 +20,18 @@ def plot_sentiment_analysis(book_file_name):
 	input_book_lines = filter(None, input_book_lines)
 	lines = strip_gutenberg_header(input_book_lines)
 	lines = separate_chapters(lines)
+	#calculates sentiment of each chapter
 	all_sentiment = []
 	for chap in lines:
 		all_sentiment.append(sentiment(chap))
+	#transforms sentiment from (polarity, subjectivity) to (polarity)(subjectivity)
 	all_sentiment = zip(*all_sentiment)
-	plt.plot((1,2,3,4,5,6,7,8,9,10,11,12,13,14,15),all_sentiment[1],'-o')
+	#calculates number of chapters in book
+	num_chaps = [x+1 for x in range(len(lines))]
+	#plots polarity vs. chapter #
+	plt.plot(num_chaps,all_sentiment[0],'-o')
 	plt.xlabel('Book Chapter #')
-	plt.ylabel('Positivity')
+	plt.ylabel('Polarity')
 	plt.title('Sentiment in each chapter of The Hound of the Baskervilles')
 	plt.show()
 
@@ -48,20 +53,22 @@ def separate_chapters(lines):
 	chap_breaks = []
 	end_line = 0
 	for line_num, line in enumerate(lines):
+		#finds what line a chapter begins and ends at
 		if line.find('Chapter') == 0:
 			chap_breaks.append((prev_break, line_num))
 			prev_break = line_num + 1
+		#finds last line of last chapter (must hard code in text)
 		if line.find("can stop at Marcini's for a little dinner on the way") == 0:
 			end_line = line_num + 1
 			chap_breaks.append((prev_break, end_line))
+	#removes empty first chapter break that only contains author information
 	del chap_breaks[0]
-	#print chap_breaks
+	#turns data on where a chapter begins and ends and compiles list of strings, 
+	#with each string containing the text for each chapter
 	chap_texts = []
 	for chap in range(len(chap_breaks)):
 		start_line, end_line = chap_breaks[chap]
 		chap_texts.append(reduce(lambda x,y: x + " " + y, lines[start_line:end_line]))
-	#print len(chap_texts)
-	#print "\n------------------------\n".join(chap_texts)
 	return chap_texts
 
 
