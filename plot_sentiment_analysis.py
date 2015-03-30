@@ -6,9 +6,11 @@ book_file_name is input string with the file name of the book's txt file
 
 import string
 from pattern.en import *
+#try to avoid import *s, just import functions as needed, or be explicit about which function from the module you are using when you call it.
 import matplotlib.pyplot as plt
 
 def plot_sentiment_analysis(book_file_name):
+    #this is really nitpicking: this function got a bit long so it would have been nice to have another function to do some of the stuff here to make this function shorter and more readable.
 	input_book = open(book_file_name,'r')
 
 	#turns book's text file into list of strings
@@ -18,6 +20,7 @@ def plot_sentiment_analysis(book_file_name):
 		input_book_lines[line] = input_book_lines[line].strip()
 	#removes empty strings from input_book_lines
 	input_book_lines = filter(None, input_book_lines)
+#I like those readable function names!
 	lines = strip_gutenberg_header(input_book_lines)
 	lines = separate_chapters(lines)
 	#calculates sentiment of each chapter
@@ -63,6 +66,7 @@ def separate_chapters(lines):
 			chap_breaks.append((prev_break, end_line))
 	#removes empty first chapter break that only contains author information
 	del chap_breaks[0]
+        #never seen this before but its readable and stackoverflow seems to approve of it. glad I learned it from you!
 	#turns data on where a chapter begins and ends and compiles list of strings, 
 	#with each string containing the text for each chapter
 	chap_texts = []
